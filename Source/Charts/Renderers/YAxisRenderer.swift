@@ -441,8 +441,8 @@ open class YAxisRenderer: AxisRendererBase
                           width: abs(startPosition.x - endPosition.x),
                           height: abs(startPosition.y - endPosition.y));
         
-        context.setFillColor(UIColor.green.withAlphaComponent(0.3).cgColor)
-        context.setStrokeColor(UIColor.green.cgColor)
+        context.setFillColor(UIColor(red: 46.0/255.0, green:171.0/255.0, blue: 43.0/255.0, alpha: 0.2).cgColor)
+        context.setStrokeColor(UIColor(red: 46.0/255.0, green:171.0/255.0, blue: 43.0/255.0, alpha: 0.2).cgColor)
         context.setLineWidth(0.0)
         context.addRect(rect)
         context.drawPath(using: .fillStroke)
