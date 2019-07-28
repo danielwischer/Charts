@@ -427,7 +427,7 @@ open class YAxisRenderer: AxisRendererBase
         }
         
         var startPosition = CGPoint(x: 0.0, y: 0.0)
-        startPosition.x = 0.0
+        startPosition.x = viewPortHandler.contentLeft
         startPosition.y = CGFloat(upper)
         startPosition = startPosition.applying(trans)
         
