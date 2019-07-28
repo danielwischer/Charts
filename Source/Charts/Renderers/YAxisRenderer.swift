@@ -383,4 +383,70 @@ open class YAxisRenderer: AxisRendererBase
         
         context.restoreGState()
     }
+    
+    open func renderLimitFill(context : CGContext) {
+        guard
+            let yAxis = self.axis as? YAxis,
+            let transformer = self.transformer
+            else { return }
+        
+        let viewPortHandler = self.viewPortHandler
+        var limitLines = yAxis.limitLines
+        
+        if limitLines.count != 2
+        {
+            return
+        }
+        
+        var upper = 0.0
+        var lower = 0.0
+        
+        context.saveGState()
+        
+        let trans = transformer.valueToPixelMatrix
+        
+        for i in 0 ..< limitLines.count
+        {
+            let l = limitLines[i]
+            
+            if !l.isEnabled
+            {
+                continue
+            }
+            
+            if l.limit > upper {
+                upper = l.limit
+            }
+            else {
+                lower = l.limit
+            }
+        }
+        
+        if upper == lower {
+            return
+        }
+        
+        var startPosition = CGPoint(x: 0.0, y: 0.0)
+        startPosition.x = 0.0
+        startPosition.y = CGFloat(upper)
+        startPosition = startPosition.applying(trans)
+        
+        var endPosition = CGPoint(x: 0.0, y: 0.0)
+        endPosition.y = CGFloat(lower)
+        endPosition = endPosition.applying(trans)
+        endPosition.x = viewPortHandler.contentRight
+        
+        let rect = CGRect(x: min(startPosition.x, endPosition.x),
+                          y: min(startPosition.y, endPosition.y),
+                          width: abs(startPosition.x - endPosition.x),
+                          height: abs(startPosition.y - endPosition.y));
+        
+        context.setFillColor(UIColor.green.withAlphaComponent(0.3).cgColor)
+        context.setStrokeColor(UIColor.green.cgColor)
+        context.setLineWidth(0.0)
+        context.addRect(rect)
+        context.drawPath(using: .fillStroke)
+        
+        context.restoreGState()
+    }
 }
